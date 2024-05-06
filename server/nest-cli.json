@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "generateOptions": {
+    "spec": false
+  },
+  "sourceRoot": "src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "watchAssets": true,
+    "assets": ["**/*.env"],
+    "plugins": [{
+      "name": "@nestjs/swagger",
+      "options": {
+        "classValidatorShim": true,
+        "introspectComments": true,
+        "controllerKeyOfComment": "summary"
+      }
+    }]
+  }
+}

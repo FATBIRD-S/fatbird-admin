@@ -13,41 +13,61 @@ export const router = createRouter({
   },
 });
 
+// 路由初始化方法
 export function setupRouter(app) {
-  initPermissionRoutes();
+  initPermissionRoutes(pageConfig);
   setupRouterGuards(router);
   app.use(router);
 }
 
-export function initPermissionRoutes() {
+// 用户路由构建
+export function initPermissionRoutes(pageConfig) {
   const routerStore = useRouterStore();
   routerStore.setFullRouteMap(dynamicRoutes);
-  if (routerStore.pageConfig?.length < 0) {
-    initRoutes(routerStore.pageConfig);
-  } else {
+  // 重置路由 “/”  “/single” 即清除所有配置的路由，重新配置
+  router.removeRoute("/");
+  router.removeRoute("/single");
+  router.options.routes.forEach((item) => {
+    router.addRoute(item);
+  });
+  // 清除已开tab小标签
+  routerStore.clearRouteTabs();
+
+  if (pageConfig) {
     initRoutes(pageConfig);
     routerStore.setPageConfig(pageConfig);
+  } else if (routerStore.pageConfig?.length > 0) {
+    initRoutes(routerStore.pageConfig);
   }
 
-  function initRoutes(config, parentKey = "Layout") {
+  function initRoutes(config, parent = "Layout") {
     config.forEach((item) => {
       const target = routerStore.fullRouteMap.get(item.key);
 
       if (routerStore.fullRouteMap.has(item.key)) {
         const route = {
           path: item.path,
-          name: item.key,
+          name: item.pathName,
           component: target.component,
           meta: {
             pageTitle: item.name,
+            key: item.key,
             icon: item?.icon ?? null,
             keepAlive: item?.keepAlive ?? false,
-            buttons: target?.buttons?.filter((btn) =>
-              item?.buttons?.includes(btn.key),
-            ),
+            single: !!item.single,
+            newWindow: !!item.newWindow,
+            buttons: target?.buttons?.filter((btn) => item?.buttons?.includes(btn.key)),
           },
         };
+
+        const parentKey = item.single ? "Single" : parent;
         !router.hasRoute(item.key) && router.addRoute(parentKey, route);
+        if (Array.isArray(target.config)) {
+          target.config.push(item);
+        } else {
+          target.config = [item];
+        }
+
         if (item.children?.length) {
           initRoutes(item.children, item.key);
         }

@@ -11,8 +11,9 @@ import { EmailModule } from './email/email.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { APP_GUARD } from '@nestjs/core';
-import { LoginGuard } from './login.guard';
-import { PermissionGuard } from './permission.guard';
+import { LoginGuard, PermissionGuard } from './guards';
+import { UserPermissionModule } from './user-permission/user-permission.module';
+import * as process from 'process';
 
 @Module({
   imports: [
@@ -39,7 +40,7 @@ import { PermissionGuard } from './permission.guard';
     }),
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: 'src/.env',
+      envFilePath: process.env.NODE_ENV === 'development' ? 'src/.env.development' : 'src/.env.production',
     }),
     JwtModule.registerAsync({
       global: true,
@@ -56,6 +57,7 @@ import { PermissionGuard } from './permission.guard';
     UserModule,
     RedisModule,
     EmailModule,
+    UserPermissionModule,
   ],
   controllers: [AppController],
   providers: [

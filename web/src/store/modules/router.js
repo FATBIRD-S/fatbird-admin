@@ -4,8 +4,11 @@ export const useRouterStore = defineStore("router", {
   state: () => ({
     fullRouteMap: new Map(),
     pageConfig: [],
+    pageConfigMap: new Map(),
     fullButtonMap: new Map(),
     routeTabs: new Map(),
+    devRouteMode: "permission", // full 显示全部路由页面 permission 显示权限路由配置的页面
+    devPageConfigCoppy: [],
   }),
   actions: {
     setFullRouteMap(routes) {
@@ -16,6 +19,9 @@ export const useRouterStore = defineStore("router", {
     },
     setPageConfig(config) {
       this.pageConfig = config;
+      config.forEach((item) => {
+        this.pageConfigMap.set(item.pathName, item);
+      });
     },
     setButtonMap(routes) {
       routes.forEach((route) => {
@@ -27,12 +33,13 @@ export const useRouterStore = defineStore("router", {
       });
     },
     setRouteTab(to, from) {
-      if (!this.fullRouteMap.has(to.name)) return true;
+      if (!this.pageConfigMap.has(to.name)) return true;
       const targetTab = {
         active: true,
         name: to.meta.pageTitle,
         path: to.path,
-        key: to.name,
+        pathName: to.name,
+        key: to.meta.name,
         icon: to.meta.icon,
         closable: to.meta.closable ?? true,
       };
@@ -54,6 +61,12 @@ export const useRouterStore = defineStore("router", {
         this.routeTabs.delete(key);
         return "";
       }
+    },
+    clearRouteTabs() {
+      this.routeTabs.clear();
+    },
+    devRouteModeTriger() {
+      this.devRouteMode = this.devRouteMode === "full" ? "permission" : "full";
     },
   },
   persist: {

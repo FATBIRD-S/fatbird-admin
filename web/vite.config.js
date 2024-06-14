@@ -12,7 +12,11 @@ export default defineConfig({
   plugins: [
     vue(),
     UnoCSS({
-      include: ["src/**/*.{vue,html,jsx,tsx}", "src/router/routes/*.js"], // 指定需要扫描的文件类型和路径
+      content: {
+        pipeline: {
+          include: ["src/**/*.{vue,html,jsx,tsx}", "src/router/routes/*.js"], // 指定需要扫描的文件类型和路径
+        },
+      },
     }),
     AutoImport({
       resolvers: [ElementPlusResolver()],
@@ -33,8 +37,7 @@ export default defineConfig({
       [env.VITE_APP_BASE_API]: {
         target: "https://api.academy-kmpark.com/test/platform/api/api/v1",
         changeOrigin: true,
-        rewrite: (path) =>
-          path.replace(new RegExp("^" + env.VITE_APP_BASE_API), ""),
+        rewrite: (path) => path.replace(new RegExp("^" + env.VITE_APP_BASE_API), ""),
       },
     },
   },

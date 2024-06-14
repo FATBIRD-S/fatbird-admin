@@ -1,4 +1,4 @@
-import { Permission } from './../entities/permission.entity';
+import { Permission } from '../entities/permission.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from '../entities/user.entity';
 

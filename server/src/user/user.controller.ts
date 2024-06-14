@@ -119,15 +119,10 @@ export class UserController {
         isAdmin: user.userInfo.isAdmin,
       },
       {
-        expiresIn: this.configService.get('jwt_refresh_token_expres_time'),
+        expiresIn: this.configService.get('jwt_refresh_token_expires_time'),
       },
     );
     return user;
-  }
-  @Post('admin/login')
-  async adminLogin(@Body() loginUser: LoginUserDto) {
-    console.log(loginUser);
-    return 'success';
   }
 
   @ApiOperation({ summary: '刷新 token' })
@@ -169,7 +164,7 @@ export class UserController {
           isAdmin: user.isAdmin,
         },
         {
-          expiresIn: this.configService.get('jwt_refresh_token_expres_time'),
+          expiresIn: this.configService.get('jwt_refresh_token_expires_time'),
         },
       );
       const vo = new RefreshTokenVo();
@@ -202,7 +197,7 @@ export class UserController {
     type: UpdateUserPasswordDto,
     description: '更新密码',
   })
-  @Post(['update_password', 'admin/update_password'])
+  @Post('update_password')
   @RequireLogin()
   async updatePassword(@UserInfo('userId') userId: number, @Body() passwordDto: UpdateUserPasswordDto) {
     return await this.userService.updateUserPassword(userId, passwordDto);
@@ -220,7 +215,7 @@ export class UserController {
   /**
    * 修改用户信息
    */
-  @Post(['update', 'admin/update'])
+  @Post('update')
   @RequireLogin()
   async update(@UserInfo('userId') userId: number, @Body() updateUserDto: UpdateUserDto) {
     return await this.userService.update(userId, updateUserDto);
@@ -258,11 +253,6 @@ export class UserController {
     @Query('email') email: string,
   ) {
     return await this.userService.findUsersByPage(pageNo, pageSize, username, email);
-  }
-
-  @Get('app')
-  getApp() {
-    return 'app';
   }
   @Get('app2')
   @RequireLgPe(['ccc'])

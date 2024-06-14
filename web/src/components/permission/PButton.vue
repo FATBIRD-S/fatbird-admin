@@ -9,6 +9,7 @@ const props = defineProps({
 });
 
 const route = useRoute();
+console.log(route);
 const buttons = route.matched.reduce((prev, curr) => {
   return prev.concat(curr.meta?.buttons ?? []);
 }, []);

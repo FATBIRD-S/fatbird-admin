@@ -1,4 +1,5 @@
 import Layout from "@/layout/Layout.vue";
+import Single from "@/layout/Single.vue";
 
 export const staticRoutes = [
   {
@@ -6,6 +7,12 @@ export const staticRoutes = [
     name: "Layout",
     path: "/",
     component: Layout,
+  },
+  {
+    // 所有配置路由将添加至Layout下
+    name: "Single",
+    path: "/",
+    component: Single,
   },
   {
     name: "Login",

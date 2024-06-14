@@ -7,7 +7,7 @@ export default function createPermissionGuard(router) {
     const userStore = useUserStore();
     const routerStore = useRouterStore();
     const token = userStore.getToken;
-    if (token) {
+    if (!token) {
       if (to.path === "/login") {
         return { path: "/" };
       } else {

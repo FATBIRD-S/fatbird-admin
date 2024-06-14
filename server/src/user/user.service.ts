@@ -190,7 +190,7 @@ export class UserService {
     });
     foundUser.password = md5(passwordDto.password);
     try {
-      this.userRepository.save(foundUser);
+      await this.userRepository.save(foundUser);
       return '密码更新成功';
     } catch (error) {
       this.logger.error(error, UserService);

@@ -43,13 +43,13 @@ const beforeChange = () => {
 <template>
   <div class="flex gap-2 items-center">
     <span>
-      <i class="i-mdi-weather-night?mask font-bold text-xl" :class="{ 'text-blue': !isDark }"></i>
+      <i class="i-mdi-weather-sunny?mask font-bold text-xl" :class="{ 'text-blue': !isDark }"></i>
     </span>
     <div @click.stop="switchTheme">
       <el-switch v-model="isDark" size="large" :before-change="beforeChange" @change="toggleDark"></el-switch>
     </div>
     <span>
-      <i class="i-mdi-weather-sunny?mask font-bold text-xl" :class="{ 'text-blue': isDark }"></i>
+      <i class="i-mdi-weather-night?mask font-bold text-xl" :class="{ 'text-blue': isDark }"></i>
     </span>
   </div>
 </template>

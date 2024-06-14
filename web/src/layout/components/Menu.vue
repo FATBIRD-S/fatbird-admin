@@ -1,7 +1,6 @@
 <script setup>
-import { useRouterStore } from "@/store/index.js";
+import { useRouterStore, useSystemStore } from "@/store/index.js";
 import MenuItems from "@/layout/components/MenuItems.vue";
-import { useSystemStore } from "@/store/modules/system.js";
 import { useRoute, useRouter } from "vue-router";
 
 const routerStore = useRouterStore();
@@ -10,7 +9,15 @@ const router = useRouter();
 const route = useRoute();
 
 function selectMenu(key) {
-  router.push({ name: key });
+  const pageConfigMap = routerStore.pageConfigMap;
+  const target = pageConfigMap.get(key);
+  console.log(target);
+  if (target.newWindow) {
+    const href = router.resolve({ name: key }).href;
+    window.open(href);
+  } else {
+    router.push({ name: key });
+  }
 }
 </script>
 

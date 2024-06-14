@@ -27,7 +27,7 @@ console.log("router", router);
 
 <template>
   <div>
-    <el-tabs v-model="activeName" type="card" @tab-click="tabClick" @tab-remove="tabRemove">
+    <el-tabs :model-value="activeName" type="card" @tab-click="tabClick" @tab-remove="tabRemove">
       <el-tab-pane
         v-for="tab in routerStore.routeTabs"
         :key="tab[0]"

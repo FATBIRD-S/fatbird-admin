@@ -3,6 +3,7 @@ import Menu from "@/layout/components/Menu.vue";
 import NavBar from "@/layout/components/NavBar.vue";
 import Content from "@/layout/components/Content.vue";
 import RouteTabs from "@/layout/components/RouteTabs.vue";
+import DevModeSetting from "@/layout/components/DevModeSetting.vue";
 </script>
 
 <template>
@@ -15,6 +16,7 @@ import RouteTabs from "@/layout/components/RouteTabs.vue";
       <RouteTabs></RouteTabs>
       <Content></Content>
     </section>
+    <DevModeSetting></DevModeSetting>
   </div>
 </template>
 
